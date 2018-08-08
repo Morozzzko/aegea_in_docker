@@ -27,7 +27,7 @@ localhost:80 {
 
 # adminer
 localhost:81 {
-    proxy / aegea_adminer:80 {
+    proxy / aegea_adminer:8080 {
         transparent
         websocket
     }

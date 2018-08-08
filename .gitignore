@@ -1,6 +1,6 @@
 .DS_Store
 .idea/
-mysql_data/
+mariadb_data/
 blog/
 caddy/.caddy/
 caddy/Caddyfile
