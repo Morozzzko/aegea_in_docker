@@ -1,0 +1,56 @@
+version: '3'
+
+# maintainer "Vladimir Hodakov <vladimir@hodakov.me>"
+services:
+
+  mariadb:
+    container_name: aegea_mariadb
+    build:
+      context: ./mariadb
+      dockerfile: Dockerfile
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+    restart: always
+    environment:
+     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+     MYSQL_DATABASE: ${MYSQL_DATABASE}
+     MYSQL_USER: ${MYSQL_USER}
+     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci
+
+
+  adminer:
+    container_name: aegea_adminer
+    image: adminer
+    restart: always
+    depends_on:
+     - mariadb
+
+  php:
+    container_name: aegea_php
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    volumes:
+      - ./blog/:/var/www/blog
+    restart: always
+    depends_on:
+      - mariadb
+
+  caddy:
+    container_name: aegea_caddy
+    build:
+      context: ./caddy
+      dockerfile: Dockerfile
+    image: abiosoft/caddy
+    depends_on:
+      - mariadb
+      - adminer
+      - php
+    volumes:
+      - ./caddy/.caddy:/root/.caddy/
+      - ./blog/:/var/www/blog
+    ports:
+      - 80:80
+      - 443:443 
+      - 2015:2015
