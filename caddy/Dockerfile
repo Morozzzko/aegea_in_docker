@@ -27,7 +27,7 @@ VOLUME /root/.caddy
 RUN mkdir -p /var/www/blog
 WORKDIR /var/www/blog
 
-COPY Caddyfile.dev /etc/Caddyfile
+COPY Caddyfile /etc/Caddyfile
 
 ENTRYPOINT ["/usr/bin/caddy"]
 CMD ["--conf", "/etc/Caddyfile", "--log", "stdout"]

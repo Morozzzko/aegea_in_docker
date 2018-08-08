@@ -1,4 +1,3 @@
-
 # PHP-сервер
 localhost:80 {
     root /var/www/blog
@@ -18,7 +17,7 @@ localhost:80 {
         to status 403
     }
 
-    fastcgi / blog_php:9000 php
+    fastcgi / aegea_php:9000 php
 
     errors stdout 
 
@@ -26,9 +25,9 @@ localhost:80 {
 }
 
 
-# phpmyadmin
+# adminer
 localhost:81 {
-    proxy / blog_phpmyadmin:80 {
+    proxy / aegea_adminer:80 {
         transparent
         websocket
     }

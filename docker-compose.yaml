@@ -1,16 +1,16 @@
 version: '3'
 
-# maintainer "Pavel Pavlenko <region23@gmail.com>"
+# maintainer "Vladimir Hodakov <vladimir@hodakov.me>"
 services:
 
-  mysql:
-    container_name: blog_mysql
+  mariadb:
+    container_name: aegea_mariadb
     build:
-      context: ./mysql
+      context: ./mariadb
       dockerfile: Dockerfile
     volumes:
-      - ./mysql_data:/var/lib/mysql
-    #restart: always
+      - ./mariadb_data:/var/lib/mysql
+    # restart: always
     environment:
      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
      MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -19,38 +19,33 @@ services:
     command: --character-set-server=utf8 --collation-server=utf8_general_ci
 
 
-  phpmyadmin:
-    container_name: blog_phpmyadmin
-    image: phpmyadmin/phpmyadmin:latest
-    environment:
-     MYSQL_ROOT_PASSWORD: root
-     PMA_HOST: blog_mysql
-    #restart: always
+  adminer:
+    container_name: aegea_adminer
+    image: adminer
+    # restart: always
     depends_on:
-     - mysql
-    volumes:
-     - /sessions
+     - mariadb
 
   php:
-    container_name: blog_php
+    container_name: aegea_php
     build:
       context: ./php
       dockerfile: Dockerfile
     volumes:
       - ./blog/:/var/www/blog
-    #restart: always
+    # restart: always
     depends_on:
-      - mysql
+      - mariadb
 
   caddy:
-    container_name: blog_caddy
+    container_name: aegea_caddy
     build:
       context: ./caddy
       dockerfile: Dockerfile
     image: abiosoft/caddy
     depends_on:
-      - mysql
-      - phpmyadmin
+      - mariadb
+      - adminer
       - php
     volumes:
       - ./caddy/.caddy:/root/.caddy/
