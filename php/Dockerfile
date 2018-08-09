@@ -1,4 +1,4 @@
-FROM php:fpm-alpine
+FROM php:5.6-fpm-alpine
 LABEL maintainer "Pavel Pavlenko <region23@gmail.com>"
 
 RUN apk update && apk upgrade
@@ -16,6 +16,10 @@ RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev lib
 RUN docker-php-source extract 
 RUN docker-php-ext-install mysqli pdo_mysql mbstring
 
+RUN apk add --no-cache zlib-dev
+RUN docker-php-ext-configure zip
+RUN docker-php-ext-install zip
+RUN apk del --no-cache zlib-dev
 
 RUN mkdir -p /var/www/blog
 
