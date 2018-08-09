@@ -1,4 +1,4 @@
-FROM php:5.6-fpm-alpine
+FROM php:7.1.20-fpm-alpine
 LABEL maintainer "Pavel Pavlenko <region23@gmail.com>"
 
 RUN apk update && apk upgrade
