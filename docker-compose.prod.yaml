@@ -33,6 +33,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./blog/:/var/www/blog
+      - ./php/conf.d/settings.ini:/usr/local/etc/php/conf.d/settings.ini
     restart: always
     depends_on:
       - mariadb
